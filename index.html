@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Império das Gramas — Gerenciador</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <h2>Bem-vindo(a)</h2>
+      <p>Digite seu PIN para acessar o sistema</p>
+
+      <input id="pinInput" inputmode="numeric" maxlength="6" class="pin-input" placeholder="●●●●" readonly />
+
+      <div id="numpad" class="numpad">
+        <button class="numpad-key">1</button><button class="numpad-key">2</button><button class="numpad-key">3</button>
+        <button class="numpad-key">4</button><button class="numpad-key">5</button><button class="numpad-key">6</button>
+        <button class="numpad-key">7</button><button class="numpad-key">8</button><button class="numpad-key">9</button>
+        <button class="numpad-key" data-action="clear">C</button>
+        <button class="numpad-key">0</button>
+        <button class="numpad-key" data-action="backspace">⌫</button>
+      </div>
+
+      <button id="pinSubmit" class="btn primary full">Entrar</button>
+      <p id="loginMsg" class="login-msg"></p>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden app-container">
+
+    <!-- SIDEBAR DESKTOP -->
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Império das Gramas</h2>
+
+      <button class="sidebar-btn" data-page="dashboardPage">📊 Dashboard</button>
+      <button class="sidebar-btn" data-page="pedidosPage">📝 Pedidos</button>
+      <button class="sidebar-btn" data-page="clientesPage">👥 Clientes</button>
+      <button class="sidebar-btn" data-page="produtosPage">📦 Catálogo</button>
+      
+      <div class="sidebar-bottom">
+        <button id="logoutBtn" class="sidebar-logout">Sair</button>
+      </div>
+    </aside>
+
+    <!-- MOBILE MENU BUTTON -->
+    <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+
+    <!-- MOBILE SIDEBAR -->
+    <aside class="sidebar mobile" id="mobileSidebar">
+      <button id="closeMobileSidebar" class="close-mobile">✕</button>
+      <h2 class="logo">Império das Gramas</h2>
+
+      <button class="sidebar-btn" data-page="dashboardPage">📊 Dashboard</button>
+      <button class="sidebar-btn" data-page="pedidosPage">📝 Pedidos</button>
+      <button class="sidebar-btn" data-page="clientesPage">👥 Clientes</button>
+      <button class="sidebar-btn" data-page="produtosPage">📦 Catálogo</button>
+
+      <div class="sidebar-bottom">
+        <button id="logoutBtnMobile" class="sidebar-logout">Sair</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <section id="dashboardPage" class="page active">
+        <h1>Dashboard</h1>
+        <div class="stats-grid">
+          <div class="stat-card" id="statHoje">Carregando...</div>
+          <div class="stat-card" id="statMes">Carregando...</div>
+          <div class="stat-card" id="statClientes">Carregando...</div>
+          <div class="stat-card" id="statProdutos">Carregando...</div>
+        </div>
+      </section>
+
+      <!-- PEDIDOS -->
+      <section id="pedidosPage" class="page">
+        <header class="page-header">
+          <h1>Pedidos</h1>
+          <div class="actions">
+            <button id="filterBtn" class="btn ghost">Filtros</button>
+            <button id="completedBtn" class="btn ghost">Concluídos</button>
+            <button id="addPedidoBtn" class="btn primary">+ Novo Pedido</button>
+          </div>
+        </header>
+        <div id="pedidosList" class="pedidos-grid"></div>
+        <div id="emptyMsg" class="empty-msg">Nenhum pedido aqui.</div>
+      </section>
+
+      <!-- FORM DETALHES DO PEDIDO -->
+      <section id="detailsPage" class="page">
+        <header class="page-header">
+          <button id="backBtn" class="btn ghost">← Voltar</button>
+          <h1 id="detailsTitle">Novo Pedido</h1>
+          <button id="saveBtn" form="pedidoForm" class="btn primary">Salvar</button>
+        </header>
+
+        <form id="pedidoForm" class="card form-pedido">
+          <label>Cliente:
+            <select id="clienteSelect" required></select>
+          </label>
+
+          <label>Entrega ou Retirada:
+            <select id="tipoEntrega">
+              <option value="entrega">Entrega</option>
+              <option value="retirada">Retirada</option>
+            </select>
+          </label>
+
+          <label id="enderecoLabel">Endereço:
+            <input id="endereco" />
+          </label>
+
+          <div class="produtos-area">
+            <h3>Itens do Pedido</h3>
+            <div class="add-item-row">
+              <select id="produtoSelect"></select>
+              <input type="number" id="produtoQtd" min="1" value="1" />
+              <button id="addItemBtn" type="button" class="btn success">Adicionar</button>
+            </div>
+            <ul id="listaItens"></ul>
+          </div>
+
+          <label>Horário:
+            <input id="horario" type="datetime-local" required />
+          </label>
+
+          <label>Valor Total (R$):
+            <input id="valorTotal" type="number" step="0.01" min="0" required />
+          </label>
+
+          <button id="deleteBtn" type="button" class="btn danger">Excluir Pedido</button>
+        </form>
+      </section>
+
+      <!-- CLIENTES -->
+      <section id="clientesPage" class="page">
+        <h1>Clientes</h1>
+        <button id="addClienteBtn" class="btn primary">+ Novo Cliente</button>
+        <ul id="clientesList" class="list-simple"></ul>
+      </section>
+
+      <!-- PRODUTOS -->
+      <section id="produtosPage" class="page">
+        <h1>Catálogo</h1>
+        <button id="addProdutoBtn" class="btn primary">+ Novo Produto</button>
+        <ul id="produtosList" class="list-simple"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
